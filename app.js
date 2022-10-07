@@ -18,6 +18,9 @@ app.post("/",function (req,res) {
   res.redirect("/");
 });
 
+app.get("/about",(req,res)=>{
+  res.render("about");
+});
 
 app.listen(3000, function () {
   console.log("http://localhost:3000");

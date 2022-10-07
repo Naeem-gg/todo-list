@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
-app.set("view engine", "ejs");
-app.use(express.urlencoded({extended:true}))
 app.use(express.static("public"));
-let items = [];
+app.use(express.urlencoded({extended:true}))
+app.set("view engine", "ejs");
+let items = ["learn React","learn Hooks", "learn props"];
 app.get("/", function (req, res) {
   const options = {weekday:"long",month:"long",day:"numeric",year:"numeric"};
   let today = new Date();

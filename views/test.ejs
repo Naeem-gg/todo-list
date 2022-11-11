@@ -7,18 +7,22 @@
         
         
             
-            <%for(let i = 0; i<items.length;i++){%>
+            <!-- <%//for(let i = 0; i<items.length;i++){%> -->
+                <%items.forEach((singleItem)=>{%>
                 <div class="item">
-                    <span style="margin-left:15px ;"><%=i+1%>:</span>
-                    <input type="checkbox" id="check">
-                    <p><%=items[i]%></p>
+                    <span style="margin-left:15px ;">:</span>
+                    
+                        
+                        <input type="checkbox" id="check">
+                    
+                    <p><%=singleItem.title%></p>
                 </div>
-                    <%}%>
+                    <%});%>
             
                 <form class="item" action="/" method="post">
                     <input type="text" name="todo" placeholder="Enter a todo" autocomplete="off">
                     <button type="submit" name="button ">+</button>
                 </form>
     </div>
-    <a href="/about">About</a>
+    <!-- <a href="/about" style="background-color:;>About</a> -->
 <%-include("footer")-%>

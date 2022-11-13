@@ -7,16 +7,19 @@
         
         
             
-            <!-- <%//for(let i = 0; i<items.length;i++){%> -->
+            
                 <%items.forEach((singleItem)=>{%>
-                <div class="item">
-                    <span style="margin-left:15px ;">:</span>
-                    
-                        
-                        <input type="checkbox" id="check">
-                    
-                    <p><%=singleItem.title%></p>
-                </div>
+                    <form action="/delete" method="post">
+
+                        <div class="item">
+                            <span style="margin-left:15px ;">:</span>
+                            
+                            
+                            <input type="checkbox" name="checkBox" value="<%= singleItem._id %> " onChange="this.form.submit()">
+                            
+                            <p><%=singleItem.title%></p>
+                        </div>
+                    </form>
                     <%});%>
             
                 <form class="item" action="/" method="post">
@@ -24,5 +27,5 @@
                     <button type="submit" name="button ">+</button>
                 </form>
     </div>
-    <!-- <a href="/about" style="background-color:;>About</a> -->
+  
 <%-include("footer")-%>

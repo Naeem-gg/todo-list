@@ -1,7 +1,10 @@
 <%-include("header")-%>
 <div class="box" id="heading">
-
+    <% if (typeof currentDay !== 'undefined' ){ %> 
     <h1><%= currentDay%></h1>
+    <% }else{ %>
+    <h1><%= item %> </h1>
+    <% } %>  
 </div>
     <div class="box">
         
@@ -24,7 +27,7 @@
             
                 <form class="item" action="/" method="post">
                     <input type="text" name="todo" placeholder="Enter a todo" autocomplete="off">
-                    <button type="submit" name="button ">+</button>
+                    <button type="submit" name="user" value="<%= item %> ">+</button>
                 </form>
     </div>
   

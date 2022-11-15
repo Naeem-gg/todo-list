@@ -1,25 +1,35 @@
-const mongoose = require('mongoose');
+// const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost:27017/todoList");
+// mongoose.connect("mongodb://localhost:27017/todoList");
 
-const todoSchema = mongoose.Schema({title: {type: String,required: true}});
-const Item = mongoose.model('Item', todoSchema);
-
-// Item.find({},(err,eee)=>{
-//     if(err){
-//         console.log(err);
-//     }
-//     else{
-//         console.log(eee);
-//     }
+// const itemSchema = new mongoose.Schema({
+//     title : {type:String,require:true},
 // });
-itemId = "636f98f294e2b9aa3171c272";
 
-Item.findByIdAndRemove(itemId, (err)=>{
-    if (err) {
-    console.log(err);
-    } else {
-        console.log("Item deleted");
-        mongoose.connection.close();
-    }
-});
+// const Item = mongoose.model("Item",itemSchema);
+
+// const item = new Item({
+//     title: "One"
+// });
+
+// const userSchema = new mongoose.Schema({
+//     name:{type:String, require:true},
+//     data: itemSchema
+// });
+// const User = mongoose.model("User",userSchema);
+
+// const user = new User({
+//     name : "naeem",
+//     data: item
+// });
+
+// item.save();
+// user.save();
+
+
+const sampleFun = (...data) =>
+{
+    console.log(...data);
+}
+
+sampleFun(10,20,30,40,"hello","ola maguire", true, false, undefined, null, {name:"naeem",age:21},[10,11,12,13,14,15]);

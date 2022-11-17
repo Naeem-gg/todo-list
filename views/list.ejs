@@ -1,33 +1,30 @@
 <%-include("header")-%>
 <div class="box" id="heading">
-    <% if (typeof currentDay !== 'undefined' ){ %> 
-    <h1><%= currentDay%></h1>
-    <% }else{ %>
-    <h1><%= item %> </h1>
-    <% } %>  
+    <h1><%= listTitle %></h1>
+   
 </div>
     <div class="box">
         
         
             
             
-                <%items.forEach((singleItem)=>{%>
+                <%newListItems.forEach((item)=>{%>
                     <form action="/delete" method="post">
 
                         <div class="item">
                             <span style="margin-left:15px ;">:</span>
                             
                             
-                            <input type="checkbox" name="checkBox" value="<%= singleItem._id %> " onChange="this.form.submit()">
+                            <input type="checkbox" name="checkBox" value="<%= item._id %> " onChange="this.form.submit()">
                             
-                            <p><%=singleItem.title%></p>
+                            <p><%=item.name%></p>
                         </div>
                     </form>
                     <%});%>
             
                 <form class="item" action="/" method="post">
                     <input type="text" name="todo" placeholder="Enter a todo" autocomplete="off">
-                    <button type="submit" name="user" value="<%= item %> ">+</button>
+                    <button type="submit" name="list" value="<%= listTitle %> ">+</button>
                 </form>
     </div>
   

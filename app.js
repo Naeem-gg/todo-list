@@ -8,39 +8,30 @@ mongoose.connect("mongodb://localhost:27017/todoList", {
   useNewUrlParser: true,
 });
 const itemSchema = new mongoose.Schema({
-  title: { type: String, required: true, unique: false },
+  name: String
 });
 
 const Item = mongoose.model("Item", itemSchema);
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true, unique: false },
-  data: [itemSchema],
+const listSchema = new mongoose.Schema({
+  name: { type: String, required: true},
+  items: [itemSchema],
 });
-const User = new mongoose.model("User", userSchema);
+const List = new mongoose.model("List", listSchema);
 
-const first = new Item({ title: "The first item" });
-const second = new Item({ title: "The second item" });
-const third = new Item({ title: "The third item" });
-const fourth = new Item({ title: "The fourth item" });
-let today = new Date();
+const first = new Item({ name: "The first item" });
+const second = new Item({ name: "The second item" });
+const third = new Item({ name: "The third item" });
+const fourth = new Item({ name: "The fourth item" });
 const defaultItem = [first, second, third, fourth];
-// let items = ["learn React","learn Hooks", "learn props"];
 app.get("/", function (req, res) {
-  Item.find({}, (err, itemsArray) => {
+  Item.find({}, (err, foundItems) => {
     if (err) {
       console.log(err);
     } else {
-      // console.log(itemsArray);
-      const options = {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-      };
-      today = new Date();
-      today = today.toLocaleDateString("en-US", options);
+      //console.log(foundItems);
+      
 
-      if (itemsArray.length === 0) {
+      if (foundItems.length === 0) {
         Item.insertMany(defaultItem, (err) => {
           if (err) {
             console.log(err);
@@ -50,31 +41,41 @@ app.get("/", function (req, res) {
         });
         res.redirect("/");
       } else {
-        res.render("test", { currentDay: today, items: itemsArray });
+        res.render("list", { listTitle: "Today", newListItems: foundItems });
       }
     }
   });
 });
 
 app.post("/", function (req, res) {
-  let reqItem = req.body.todo;
-  let userDefined = req.body.user;
-  const item = new Item({ title: reqItem });
-  
-  if(userDefined === today)
+  let itemName = req.body.todo;
+  let listName = req.body.list;
+  const item = new Item({ name: itemName });
+  if(listName == "Today")
   {
+
     item.save();
     res.redirect("/");
-    
-  }else{
-
-    User.findOne({name:userDefined},(err,foundResult)=>{
-      if(!err)
-        if(foundResult)
-          console.log("Hurrayyyyy!!!!!!")
-    });
-
   }
+  else
+  {
+    List.findOne({name:listName},(err,foundList)=>{
+      if(err)
+      {
+        console.log(err);
+      }
+      else if(foundList)
+      {
+
+        foundList.items.push(item)
+        foundList.save();
+        res.redirect(`/${listName}`);
+      }
+      else
+      {console.log("****ERRRRROORRR****"+listName);}
+    });
+  }
+    
   
 });
 
@@ -97,32 +98,27 @@ app.post("/", function (req, res) {
     res.redirect("/");
   });
 
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-
 //dynamic routes defined in app by user
 app.get("/:userRoute", (req, res) => {
   const userRoute = req.params.userRoute;
-  // res.send(`<h1>${userRoute}</h1>`);
-  if (userRoute !== "favicon.ico") {
+  if (userRoute !== "favicon.ico") { //something wrong with my system thats why
     console.log(userRoute);
 
     //Find for duplicate entry in db
 
-    User.findOne({ name: userRoute }, (err, result) => {
+    List.findOne({ name: userRoute }, (err, foundList) => {
       if (!err) {
-        if (!result) {
+        if (!foundList) {
           // console.log("Does not exists");
-          const user = new User({
+          const list = new List({
             name: userRoute,
-            data: defaultItem,
+            items: defaultItem,
           });
-          user.save();
+          list.save();
           res.redirect(`/${userRoute}`);
-        } else //result is present
+        } else //foundList is present
         {
-          res.render("test", { item: result.name, items: result.data });
+          res.render("list", { listTitle:foundList.name, newListItems: foundList.items });
         }
       }
     });

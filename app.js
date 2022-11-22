@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const lodash = require('lodash');
 const app = express();
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -51,7 +52,7 @@ app.post("/", function (req, res) {
   let itemName = req.body.todo;
   let listName = req.body.list;
   const item = new Item({ name: itemName });
-  if(listName == "Today")
+  if(listName === "Today")
   {
 
     item.save();
@@ -75,7 +76,7 @@ app.post("/", function (req, res) {
       {console.log("****ERRRRROORRR****"+listName);}
     });
   }
-    
+    // res.redirect(`/${listName}`);
   
 });
 
@@ -83,25 +84,42 @@ app.post("/", function (req, res) {
     // console.log(req.body);
     let itemId = req.body.checkBox.toString().trim();
     // title = String(title);
+    let listTitle = req.body.listTitle;
+   
+    if(listTitle === "Today")
+    {
 
-    console.log(typeof "itemId" + " : " + "itemId");
+      // console.log(mongoose.Types.ObjectId.isValid(`${itemId}`));
+      Item.findByIdAndRemove(itemId, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Item deleted");
+          console.log(listTitle);
+          // mongoose.connection.close();
+          res.redirect("/");
+        }
+      });
+    }
+    else
+    {
+      List.findOneAndUpdate({name:listTitle},{$pull:{items:{_id:itemId}}},(err,foundList)=>{
+        if(!err)
+        {
+          res.redirect(`/${listTitle}`);
+        }
+      });
 
-    console.log(mongoose.Types.ObjectId.isValid(`${itemId}`));
-    Item.findByIdAndRemove(itemId, (err) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log("Item deleted");
-        // mongoose.connection.close();
-      }
-    });
-    res.redirect("/");
+      // res.redirect("/"+listTitle);
+    }
   });
 
 //dynamic routes defined in app by user
 app.get("/:userRoute", (req, res) => {
-  const userRoute = req.params.userRoute;
-  if (userRoute !== "favicon.ico") { //something wrong with my system thats why
+
+  const userRoute = lodash.capitalize(req.params.userRoute);
+  // const userRoute = req.params.userRoute;
+  if (userRoute !== "favicon.ico" && userRoute !== "Favicon.ico") { //something wrong with my system thats why
     console.log(userRoute);
 
     //Find for duplicate entry in db

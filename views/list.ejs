@@ -1,6 +1,6 @@
 <%-include("header")-%>
 <div class="box" id="heading">
-    <h1><%= listTitle %></h1>
+    <h1><%=listTitle%></h1>
    
 </div>
     <div class="box">
@@ -19,12 +19,13 @@
                             
                             <p><%=item.name%></p>
                         </div>
+                        <input type="hidden" name="listTitle" value="<%= listTitle %>"></input>
                     </form>
                     <%});%>
             
                 <form class="item" action="/" method="post">
                     <input type="text" name="todo" placeholder="Enter a todo" autocomplete="off">
-                    <button type="submit" name="list" value="<%= listTitle %> ">+</button>
+                    <button type="submit" name="list" value="<%=listTitle %>">+</button>
                 </form>
     </div>
   

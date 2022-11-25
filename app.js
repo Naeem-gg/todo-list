@@ -5,9 +5,12 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-mongoose.connect("mongodb://localhost:27017/todoList", {
-  useNewUrlParser: true,
-});
+//Local MongoDb
+// mongoose.connect("mongodb://localhost:27017/todoList",{useNewUrlParser: true,});
+
+//Atlas Mongodb
+
+mongoose.connect("mongodb+srv://naeem:Navjivan@testcluster.zhdjquu.mongodb.net/todoList");
 const itemSchema = new mongoose.Schema({
   name: String
 });
@@ -25,6 +28,7 @@ const third = new Item({ name: "The third item" });
 const fourth = new Item({ name: "The fourth item" });
 const defaultItem = [first, second, third, fourth];
 app.get("/", function (req, res) {
+
   Item.find({}, (err, foundItems) => {
     if (err) {
       console.log(err);
@@ -57,6 +61,7 @@ app.post("/", function (req, res) {
 
     item.save();
     res.redirect("/");
+    
   }
   else
   {

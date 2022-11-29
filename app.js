@@ -11,7 +11,7 @@ app.set("view engine", "ejs");
 
 //Atlas Mongodb
 
-mongoose.connect("mongodb+srv://naeem:Navjivan@testcluster.zhdjquu.mongodb.net/todoList");
+mongoose.connect("mongodb+srv://naeem:"+json.PASSWORD+"@testcluster.zhdjquu.mongodb.net/todoList");
 const itemSchema = new mongoose.Schema({
   name: String
 });

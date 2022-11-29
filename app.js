@@ -1,4 +1,5 @@
 const express = require("express");
+const json = require("./pass.json");
 const mongoose = require("mongoose");
 const lodash = require('lodash');
 const app = express();
@@ -10,7 +11,7 @@ app.set("view engine", "ejs");
 
 //Atlas Mongodb
 
-mongoose.connect("mongodb+srv://naeem:Navjivan@testcluster.zhdjquu.mongodb.net/todoList");
+mongoose.connect("mongodb+srv://naeem:"+json.PASSWORD+"@testcluster.zhdjquu.mongodb.net/todoList");
 const itemSchema = new mongoose.Schema({
   name: String
 });
